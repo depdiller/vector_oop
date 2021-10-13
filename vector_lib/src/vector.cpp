@@ -41,8 +41,9 @@ namespace lab3 {
         return vectorArr[index];
     }
 
-//    double *Vector::getVectArr() const {
-//    }
+    const double *Vector::getVectArr() const {
+        return vectorArr;
+    }
 
     Vector &Vector::setEl(int index, double elem) {
         if (index >= SIZE)
@@ -59,36 +60,52 @@ namespace lab3 {
         int index;
         double numb;
         do {
-            std::cout << "Choose option: 1. Add\t2. Exit" << std::endl;
-            getNum(choice);
-            if (choice != 1)
-            std::cout << "Enter new element if this format: (index, number) -> ";
-            if (getNum(index, 0) != -1 && getNum(numb) != -1) {
-                if (countElm == SIZE)
-                    throw std::invalid_argument("exceeded_size");
-                this->setEl(index, numb);
-                ++countElm;
-            } else
-                throw std::invalid_argument("entered eof during reading");
-        } while(choice != 2);
+            std::cout << err;
+            err = "There is no such command";
+            std::cout << "\n\t//OPTION MENU//\nChoose option: 0.Exit\t1. Add" << std::endl;
+            getInt(choice);
+            if (choice == -1)
+                choice = 0;
+            else if (choice == 1) {
+                std::cout << "Enter new element if this format: (index, number) -> ";
+                if (getInt(index) != -1 && getNum(numb) != -1) {
+                    if (countElm == SIZE)
+                        throw std::invalid_argument("exceeded_size");
+                    this->setEl(index, numb);
+                    std::cout << "success" << std::endl;
+                    ++countElm;
+                } else
+                    throw std::invalid_argument("entered eof during reading");
+                err = "";
+            }
+        } while(choice < 0 || choice == 1);
     }
 
-    void Vector::sum(Vector b) {
+    Vector& Vector::sum(Vector b) {
+        Vector* c = new Vector;
         for (int i = 0; i < SIZE; ++i) {
-            vectorArr[i] = vectorArr[i] + b.vectorArr[i];
+            c->vectorArr[i] = vectorArr[i] + b.vectorArr[i];
         }
+        c->countElm = this->countElm > b.countElm ? this->countElm : b.countElm;
+        return *c;
     }
 
-    void Vector::sub(Vector b) {
+    Vector& Vector::sub(Vector b) {
+        Vector* c = new Vector;
         for (int i = 0; i < SIZE; ++i) {
-            vectorArr[i] = vectorArr[i] - b.vectorArr[i];
+            c->vectorArr[i] = vectorArr[i] - b.vectorArr[i];
         }
+        c->countElm = this->countElm > b.countElm ? this->countElm : b.countElm;
+        return *c;
     }
 
-    void Vector::mult(Vector b) {
+    Vector& Vector::mult(Vector b) {
+        Vector* c = new Vector;
         for (int i = 0; i < SIZE; ++i) {
-            vectorArr[i] = vectorArr[i] * b.vectorArr[i];
+            c->vectorArr[i] = vectorArr[i] * b.vectorArr[i];
         }
+        c->countElm = this->countElm > b.countElm ? this->countElm : b.countElm;
+        return *c;
     }
 
     double Vector::norm() {
@@ -117,19 +134,29 @@ namespace lab3 {
     void Vector::printVector() const {
         std::cout << "{";
         for (int i = 0; i < SIZE; ++i) {
-            if (i < countElm) {
-                if (i == SIZE - 1)
-                    std::cout << std::setprecision(2) << std::fixed << vectorArr[i];
-                else
-                    std::cout << std::setprecision(2) << std::fixed << vectorArr[i] << ", ";
-            }
-            else {
-                if (i == SIZE - 1)
-                    std::cout << 0;
-                else
-                    std::cout << 0 << ", ";
-            }
+            if (i == SIZE - 1)
+                std::cout << std::setprecision(2) << std::fixed << vectorArr[i];
+            else
+                std::cout << std::setprecision(2) << std::fixed << vectorArr[i] << ", ";
         }
         std::cout << "}" << std::endl;
+    }
+
+    int getInt(int &a) {
+        int indic;
+        do {
+            std::cin >> a;
+            indic = 1;
+            if (std::cin.eof())
+                indic = -1;
+            else if (!std::cin.good()) {
+                std::cout << "Incorrect input. Try again" << std::endl;
+                indic = 0;
+                std::cin.clear();
+                std::cin.ignore(INT_MAX, '\n');
+
+            }
+        } while(indic ==0);
+        return indic < 0 ? -1 : 1;
     }
 }

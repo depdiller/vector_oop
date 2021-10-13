@@ -23,15 +23,20 @@ namespace lab3 {
         Vector();
         Vector(double element);
         Vector(int size, double elemArr[]);
+
         // getters
         double getEl(int index) const;
-//        double *getVectArr() const;
+        const double *getVectArr() const;
+        int getSIZE() const { return SIZE; }
+        int getCountElm() const { return countElm; }
+
         // setters
         Vector& setEl(int index, double elem);
+
         // arithmetic methods
-        void sum(Vector b);
-        void sub(Vector b);
-        void mult(Vector b);
+        Vector& sum(Vector b);
+        Vector& sub(Vector b);
+        Vector& mult(Vector b);
         double norm();
         void put(double elem);
 
@@ -44,6 +49,8 @@ namespace lab3 {
 
     bool definitelyGreaterThan(double a, double b, double epsilon);
 
+    int getInt(int &a);
+
     template <class T>
     int getNum(T &a, int option = 1) { // option 1 = all numbers, option 0 = non zeros
         int indic;
@@ -52,7 +59,7 @@ namespace lab3 {
             indic = 1;
             if (std::cin.eof())
                 indic = -1;
-            if (option == 1) {
+            else if (option == 1) {
                 if (!std::cin.good()) {
                     std::cout << "Incorrect input. Try again" << std::endl;
                     indic = 0;
