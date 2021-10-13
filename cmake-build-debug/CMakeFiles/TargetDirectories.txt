@@ -1,0 +1,8 @@
+C:/Users/stani/CLionProjects/vector/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/stani/CLionProjects/vector/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+C:/Users/stani/CLionProjects/vector/cmake-build-debug/vector_lib/CMakeFiles/vector.dir
+C:/Users/stani/CLionProjects/vector/cmake-build-debug/vector_lib/CMakeFiles/edit_cache.dir
+C:/Users/stani/CLionProjects/vector/cmake-build-debug/vector_lib/CMakeFiles/rebuild_cache.dir
+C:/Users/stani/CLionProjects/vector/cmake-build-debug/test_main/CMakeFiles/test_main.dir
+C:/Users/stani/CLionProjects/vector/cmake-build-debug/test_main/CMakeFiles/edit_cache.dir
+C:/Users/stani/CLionProjects/vector/cmake-build-debug/test_main/CMakeFiles/rebuild_cache.dir

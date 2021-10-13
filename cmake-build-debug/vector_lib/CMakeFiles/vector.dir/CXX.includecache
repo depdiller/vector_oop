@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Users/stani/CLionProjects/vector/vector_lib/src/vector.cpp
+vector.h
+C:/Users/stani/CLionProjects/vector/vector_lib/src/vector.h
+
+C:/Users/stani/CLionProjects/vector/vector_lib/src/vector.h
+iostream
+-
+iomanip
+-
+cmath
+-
+limits
+-
+
