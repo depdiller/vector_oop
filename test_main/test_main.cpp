@@ -49,5 +49,6 @@ int main() {
         std::cout << std::setprecision(2) << std::fixed << *(c + i) << " ";
         ++c;
     }
+
     return 0;
 }

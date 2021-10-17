@@ -82,7 +82,7 @@ namespace lab3 {
     }
 
     Vector& Vector::sum(Vector b) {
-        Vector* c = new Vector;
+        Vector *c = new Vector;
         for (int i = 0; i < SIZE; ++i) {
             c->vectorArr[i] = vectorArr[i] + b.vectorArr[i];
         }

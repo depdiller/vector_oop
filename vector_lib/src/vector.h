@@ -15,7 +15,7 @@ namespace lab3 {
     class Vector {
     private:
         // const size of array
-        static const int SIZE = 20;
+        static const int SIZE = 20;// можно убрать в публичный
         double vectorArr[SIZE];
         int countElm;
     public:
@@ -78,6 +78,13 @@ namespace lab3 {
         } while (indic == 0);
         return indic < 0 ? -1 : 1;
     }
-}
+}/*TODO:
+ * 1. Проверить на утечки нынешние арифметические методы, если че, переделать на указатели
+ * 2. переделать метод с чтением из потока
+ * 3. переделать взаимодействия с размерами вектора
+ * 4. конструкторы должны уметь работать с константными объектами
+ * 5. подправить getNum, чтобы адекватно работала и не вылетала + чтобы полноценно заменить
+ * ей getInt, а то код грязный
+ * 6. убрать размер из private области класса */
 
 #endif //VECTOR_VECTOR_H
