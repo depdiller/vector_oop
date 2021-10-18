@@ -13,36 +13,38 @@ namespace lab3 {
     const double epsilon = 0.01;
 
     class Vector {
+    public:
+        // по-другому размер не работает в private
+        static const int SIZE = 20;
     private:
         // const size of array
-        static const int SIZE = 20;// можно убрать в публичный
         double vectorArr[SIZE];
-        int countElm;
+        int currSize;
     public:
         // constructors
-        Vector();
-        Vector(double element);
+        Vector() : currSize(0) {};
+        Vector(double element) : currSize(1), vectorArr{double(element)} {};
         Vector(int size, double elemArr[]);
-
-        // getters
-        double getEl(int index) const;
-        const double *getVectArr() const;
-        int getSIZE() const { return SIZE; }
-        int getCountElm() const { return countElm; }
-
-        // setters
-        Vector& setEl(int index, double elem);
-
-        // arithmetic methods
-        Vector& sum(Vector b);
-        Vector& sub(Vector b);
-        Vector& mult(Vector b);
-        double norm();
         void put(double elem);
 
+        // getters
+        [[nodiscard]] double getEl(int index) const;
+        [[nodiscard]] const double *getVectArr() const { return this->vectorArr; }
+
+        int getCurrSize() const { return currSize; }
+
+        // setters
+        Vector &setEl(int index, double elem);
+        // arithmetic methods
+        Vector& sum(Vector b) const;
+        Vector& sub(Vector b) const;
+        Vector& mult(Vector b) const;
+        double norm();
+
         // additional
-        void printVector() const;
-        void inputInit();
+        // inputInit format = line with numbers, separated by
+        void inputInit(std::istream &s);
+        void print(std::ostream &s) const;
     };
 
     bool approximatelyEqual(double a, double b, double epsilon);

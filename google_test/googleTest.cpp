@@ -8,7 +8,7 @@ TEST(VectorConstructor, DefaultConstructor) {
     lab3::Vector a1;
     const double *c;
     c = a1.getVectArr();
-    for (int i = 0; i < a1.getSIZE(); ++i) {
+    for (int i = 0; i < lab3::Vector::SIZE; ++i) {
         ASSERT_DOUBLE_EQ(0, *c);
         ++c;
     }
@@ -26,7 +26,7 @@ TEST(VectorConstructor, ElementConstructor) {
     ASSERT_DOUBLE_EQ(1, *c2);
     ++c1;
     ++c2;
-    for (int i = 1; i < a1.getSIZE(); ++i) {
+    for (int i = 1; i < lab3::Vector::SIZE; ++i) {
         ASSERT_DOUBLE_EQ(0, *c1);
         ASSERT_DOUBLE_EQ(0, *c2);
         ++c1;

@@ -4,113 +4,117 @@
 #include "vector.h"
 
 namespace lab3 {
-    Vector::Vector() {
-        countElm = 0;
-        for(int i = 0; i < SIZE; ++i) {
-            vectorArr[i] = 0;
-        }
-    }
-
-    Vector::Vector(double element) {
-        countElm = 1;
-        vectorArr[0] = element;
-        for (int i = 1; i < SIZE; ++i)
-            vectorArr[i] = 0;
-    }
-
     Vector::Vector(int size, double elmArr[]) {
-        // типа размер вектора ограничивает добавление новых
-        // и никак не связан с размером elmArr
-        // или size можно отрезать от массива элементы
         if (size > SIZE)
             throw std::invalid_argument("exceeded_size");
-        countElm = size;
+        currSize = size;
         int i;
         for (i = 0; i < size; ++i) {
             vectorArr[i] = *elmArr;
             ++elmArr;
         }
-        for (; i < SIZE; ++i)
-            vectorArr[i] = 0;
     }
 
     double Vector::getEl(int index) const {
         // index from 0 to n
-        if (index >= SIZE)
+        if (index > currSize - 1)
             throw std::invalid_argument("exceeded_size");
         return vectorArr[index];
-    }
-
-    const double *Vector::getVectArr() const {
-        return vectorArr;
     }
 
     Vector &Vector::setEl(int index, double elem) {
         if (index >= SIZE)
             throw std::invalid_argument("exceeded_size");
         vectorArr[index] = elem;
-        if (index >= countElm)
-            ++countElm;
+        if (index >= currSize)
+            ++currSize;
         return *this;
     }
 
-    void Vector::inputInit() {
-        int choice;
-        const char *err = "";
-        int index;
-        double numb;
+    void Vector::inputInit(std::istream &s) {
+        int i = currSize, size = 0;
+        double tmp;
         do {
-            std::cout << err;
-            err = "There is no such command";
-            std::cout << "\n\t//OPTION MENU//\nChoose option: 0.Exit\t1. Add" << std::endl;
-            getInt(choice);
-            if (choice == -1)
-                choice = 0;
-            else if (choice == 1) {
-                std::cout << "Enter new element if this format: (index, number) -> ";
-                if (getInt(index) != -1 && getNum(numb) != -1) {
-                    if (countElm == SIZE)
-                        throw std::invalid_argument("exceeded_size");
-                    this->setEl(index, numb);
-                    std::cout << "success" << std::endl;
-                    ++countElm;
-                } else
-                    throw std::invalid_argument("entered eof during reading");
-                err = "";
-            }
-        } while(choice < 0 || choice == 1);
+            if (size >= SIZE)
+                throw std::invalid_argument("exceeded_size");
+           if (s.good()) {
+               s >> tmp;
+           }
+           else
+               throw std::invalid_argument("error in inputInit");
+            vectorArr[i] = tmp;
+           ++size;
+           ++i;
+        } while (s.peek() != '\n' && !s.eof());
+        currSize = size;
     }
 
-    Vector& Vector::sum(Vector b) {
+    void Vector::print(std::ostream &s) const {
+        s << "{";
+        for (int i = 0; i < currSize; ++i) {
+            if (i == currSize - 1)
+                s << std::setprecision(2) << std::fixed << vectorArr[i];
+            else
+                  s << std::setprecision(2) << std::fixed << vectorArr[i] << ", ";
+        }
+        s << "}" << std::endl;
+    }
+
+
+    Vector& Vector::sum(Vector b) const {
+        int minSize = this->currSize < b.currSize ? this->currSize : b.currSize;
         Vector *c = new Vector;
-        for (int i = 0; i < SIZE; ++i) {
+        int i;
+        for (i = 0; i < minSize; ++i) {
             c->vectorArr[i] = vectorArr[i] + b.vectorArr[i];
         }
-        c->countElm = this->countElm > b.countElm ? this->countElm : b.countElm;
+        if (b.currSize == i) {
+            for (i = 0; i < this->currSize; ++i) {
+                c->vectorArr[i] = vectorArr[i] + 0;
+            }
+        }
+        else {
+            for (i = 0; i < b.currSize; ++i) {
+                c->vectorArr[i] = 0 + b.vectorArr[i];
+            }
+        }
+        c->currSize = this->currSize > b.currSize ? this->currSize : b.currSize;
         return *c;
     }
 
-    Vector& Vector::sub(Vector b) {
-        Vector* c = new Vector;
-        for (int i = 0; i < SIZE; ++i) {
+    Vector& Vector::sub(Vector b) const {
+        int minSize = this->currSize < b.currSize ? this->currSize : b.currSize;
+        Vector *c = new Vector;
+        int i;
+        for (i = 0; i < minSize; ++i) {
             c->vectorArr[i] = vectorArr[i] - b.vectorArr[i];
         }
-        c->countElm = this->countElm > b.countElm ? this->countElm : b.countElm;
+        if (b.currSize == i) {
+            for (i = 0; i < this->currSize; ++i) {
+                c->vectorArr[i] = vectorArr[i] - 0;
+            }
+        }
+        else {
+            for (i = 0; i < b.currSize; ++i) {
+                c->vectorArr[i] = 0 - b.vectorArr[i];
+            }
+        }
+        c->currSize = this->currSize > b.currSize ? this->currSize : b.currSize;
         return *c;
     }
 
-    Vector& Vector::mult(Vector b) {
-        Vector* c = new Vector;
+    Vector& Vector::mult(Vector b) const {
+        Vector *c = new Vector;
         for (int i = 0; i < SIZE; ++i) {
             c->vectorArr[i] = vectorArr[i] * b.vectorArr[i];
         }
-        c->countElm = this->countElm > b.countElm ? this->countElm : b.countElm;
+        c->currSize = this->currSize > b.currSize ? this->currSize : b.currSize;
         return *c;
     }
 
     double Vector::norm() {
         double max = 0;
-        for (int i = 0; i < countElm; ++i) {
+        for (int i = 0; i < currSize; ++i) {
             if (lab3::definitelyGreaterThan(vectorArr[i], max, epsilon))
                 max = vectorArr[i];
         }
@@ -118,9 +122,9 @@ namespace lab3 {
     }
 
     void Vector::put(double elem) {
-        if (countElm == SIZE)
+        if (currSize == SIZE)
             throw std::invalid_argument("exceeded_size");
-        vectorArr[countElm] = elem;
+        vectorArr[currSize] = elem;
     }
 
     bool approximatelyEqual(double a, double b, double epsilon) {
@@ -129,17 +133,6 @@ namespace lab3 {
 
     bool definitelyGreaterThan(double a, double b, double epsilon) {
         return (a - b) > ( (fabs(a) < fabs(b) ? fabs(b) : fabs(a)) * epsilon);
-    }
-
-    void Vector::printVector() const {
-        std::cout << "{";
-        for (int i = 0; i < SIZE; ++i) {
-            if (i == SIZE - 1)
-                std::cout << std::setprecision(2) << std::fixed << vectorArr[i];
-            else
-                std::cout << std::setprecision(2) << std::fixed << vectorArr[i] << ", ";
-        }
-        std::cout << "}" << std::endl;
     }
 
     int getInt(int &a) {
