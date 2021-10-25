@@ -130,8 +130,8 @@ _deps/googletest-build/googletest/clean: _deps/googletest-build/googletest/CMake
 # Target rules for target CMakeFiles/google_test_run.dir
 
 # All Build rule for target.
-CMakeFiles/google_test_run.dir/all: _deps/googletest-build/googletest/CMakeFiles/gtest.dir/all
 CMakeFiles/google_test_run.dir/all: _deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/all
+CMakeFiles/google_test_run.dir/all: _deps/googletest-build/googletest/CMakeFiles/gtest.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\google_test_run.dir\build.make CMakeFiles/google_test_run.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\google_test_run.dir\build.make CMakeFiles/google_test_run.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\stani\CLionProjects\vector\google_test\cmake-build-debug\CMakeFiles --progress-num=5,6,7 "Built target google_test_run"

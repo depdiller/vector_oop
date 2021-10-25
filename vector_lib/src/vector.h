@@ -31,7 +31,7 @@ namespace lab3 {
         void put(double elem);
 
         // getters
-        [[nodiscard]] double getEl(int index) const;
+        double getEl(int index) const;
         [[nodiscard]] const double *getVectArr() const { return this->vectorArr; }
         int getCurrSize() const { return currSize; }
 
@@ -51,7 +51,7 @@ namespace lab3 {
         // overloaded operators
         Vector &operator-();
         Vector &operator+=(const Vector &b);
-        double operator[](std::size_t index) { return vectorArr[index]; }
+        double& operator[](std::size_t index) { return vectorArr[index]; }
         double operator[](std::size_t index) const { return vectorArr[index]; }
         Vector &operator++();
         Vector operator++(int);
@@ -97,4 +97,8 @@ namespace lab3 {
  * ей getInt, а то код грязный*/
 
 /*TODO перегрузить:
- * В части В - операция присваивания обязательно - копирующая и перемещающая */
+ * В части В - операция присваивания обязательно - копирующая и перемещающая
+ * переделать на динамическую
+ * копирующий перемещающий конструктор
+ * просваивание в тестах
+ * */

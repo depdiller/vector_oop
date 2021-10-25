@@ -7,7 +7,7 @@ namespace lab3 {
     // constructor
     Vector::Vector(int size, double elmArr[]) {
         if (size > SIZE)
-            throw std::invalid_argument("exceeded_size");
+            throw std::invalid_argument("exceeded_size_inConstructor");
         currSize = size;
         int i;
         for (i = 0; i < size; ++i) {
@@ -51,6 +51,11 @@ namespace lab3 {
         if (minSize < this->currSize) {
             for (; i < this->currSize; ++i) {
                 c.vectorArr[i] += vectorArr[i];
+            }
+        }
+        else if (minSize < b.currSize) {
+            for (; i < b.currSize; ++i) {
+                c.vectorArr[i] = 0 + b.vectorArr[i];
             }
         }
         c.currSize = this->currSize > b.currSize ? this->currSize : b.currSize;
@@ -176,6 +181,11 @@ namespace lab3 {
         if (minSize < a.currSize) {
             for (; i < a.currSize; ++i) {
                 c.vectorArr[i] += a.vectorArr[i];
+            }
+        }
+        else if (minSize < b.currSize) {
+            for (; i < b.currSize; ++i) {
+                c.vectorArr[i] = 0 + b.vectorArr[i];
             }
         }
         c.currSize = a.currSize > b.currSize ? a.currSize : b.currSize;
