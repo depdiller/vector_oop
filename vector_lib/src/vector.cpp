@@ -6,8 +6,11 @@
 namespace lab3 {
     // constructor
     Vector::Vector(int size, double elmArr[]) {
-        if (size > SIZE)
-            throw std::invalid_argument("exceeded_size_inConstructor");
+        try {
+            vectorArr = new double[size];
+        } catch(std::bad_alloc &ba) {
+            throw ba;
+        }
         currSize = size;
         int i;
         for (i = 0; i < size; ++i) {
@@ -15,11 +18,32 @@ namespace lab3 {
             ++elmArr;
         }
     }
+    Vector::Vector(const Vector &v) {
+        std::cout << "===Copy constructor called===" << std::endl;
+
+        vectorArr = new double[v.currSize];
+        for (int i = 0; i < v.currSize; ++i)
+            vectorArr[i] = v.vectorArr[i];
+        currSize = v.currSize;
+    }
+    Vector::Vector(Vector &&v) noexcept: vectorArr(v.vectorArr), currSize(v.currSize) {
+        std::cout << "===Move constructor called===" << std::endl;
+
+        v.vectorArr = nullptr;
+    }
+
     void Vector::put(double elem) {
-        if (currSize == SIZE)
-            throw std::invalid_argument("exceeded_size");
+        double *tmpVector;
+        try {
+            tmpVector = new double[currSize + 10];
+        } catch(std::bad_alloc &ba) {
+            throw ba;
+        }
+        memcpy(tmpVector, vectorArr, currSize);
+        delete[] vectorArr;
+        vectorArr = tmpVector;
         vectorArr[currSize] = elem;
-        ++currSize;
+        currSize += 10;
     }
 
     // getters
@@ -115,8 +139,18 @@ namespace lab3 {
         int i = currSize, size = 0;
         double tmp;
         do {
-            if (size >= SIZE)
-                throw std::invalid_argument("exceeded_size");
+            if (size >= currSize) {
+                double *tmpVector;
+                try {
+                    tmpVector = new double[currSize + 10];
+                } catch(std::bad_alloc &ba) {
+                    throw ba;
+                }
+                memcpy(tmpVector, vectorArr, currSize);
+                delete[] vectorArr;
+                vectorArr = tmpVector;
+                currSize += 10;
+            }
            if (s.good()) {
                s >> tmp;
            }
@@ -142,6 +176,23 @@ namespace lab3 {
     }
 
     // Overloaded Operations
+    Vector &Vector::operator=(const Vector &v) {
+        if (&v != this) {
+            vectorArr = new double[v.currSize];
+            for (int i = 0; i < v.currSize; ++i)
+                vectorArr[i] = v.vectorArr[i];
+            currSize = v.currSize;
+        }
+        return *this;
+    }
+    Vector &Vector::operator=(Vector &&v) noexcept {
+        if (&v != this) {
+            vectorArr = v.vectorArr;
+            currSize = v.currSize;
+            v.vectorArr = nullptr;
+        }
+        return *this;
+    }
     std::ostream &operator<<(std::ostream &s, const Vector &v) {
         s << "{";
         for (int i = 0; i < v.currSize; ++i) {
@@ -157,8 +208,18 @@ namespace lab3 {
         int i = v.currSize, size = 0;
         double tmp;
         do {
-            if (size >= Vector::SIZE)
-                throw std::invalid_argument("exceeded_size");
+            if (size >= v.currSize) {
+                double *tmpVector;
+                try {
+                    tmpVector = new double[v.currSize + 10];
+                } catch (std::bad_alloc &ba) {
+                    throw ba;
+                }
+                memcpy(tmpVector, v.vectorArr, v.currSize);
+                delete[] v.vectorArr;
+                v.vectorArr = tmpVector;
+                v.currSize += 10;
+            }
             if (is.good()) {
                 is >> tmp;
             }
@@ -171,16 +232,16 @@ namespace lab3 {
         v.currSize = size;
         return is;
     }
-    Vector operator+(const Vector &a, const Vector &b) {
-        int minSize = a.currSize < b.currSize ? a.currSize : b.currSize;
+    Vector Vector::operator+(const Vector &b) {
+        int minSize = this->currSize < b.currSize ? this->currSize : b.currSize;
         Vector c = b;
         int i;
         for (i = 0; i < minSize; ++i) {
-            c.vectorArr[i] += a.vectorArr[i];
+            c.vectorArr[i] += this->vectorArr[i];
         }
-        if (minSize < a.currSize) {
-            for (; i < a.currSize; ++i) {
-                c.vectorArr[i] += a.vectorArr[i];
+        if (minSize < this->currSize) {
+            for (; i < this->currSize; ++i) {
+                c.vectorArr[i] += this->vectorArr[i];
             }
         }
         else if (minSize < b.currSize) {
@@ -188,19 +249,19 @@ namespace lab3 {
                 c.vectorArr[i] = 0 + b.vectorArr[i];
             }
         }
-        c.currSize = a.currSize > b.currSize ? a.currSize : b.currSize;
+        c.currSize = this->currSize > b.currSize ? this->currSize : b.currSize;
         return c;
     }
-    Vector operator-(const Vector &a, const Vector &b) {
-        int minSize = a.currSize < b.currSize ? a.currSize : b.currSize;
+    Vector Vector::operator-(const Vector &b) {
+        int minSize = this->currSize < b.currSize ? this->currSize : b.currSize;
         Vector c = b;
         int i;
         for (i = 0; i < minSize; ++i) {
-            c.vectorArr[i] = a.vectorArr[i] - b.vectorArr[i];
+            c.vectorArr[i] = this->vectorArr[i] - b.vectorArr[i];
         }
-        if (minSize < a.currSize) {
-            for (; i < a.currSize; ++i) {
-                c.vectorArr[i] = a.vectorArr[i];
+        if (minSize < this->currSize) {
+            for (; i < this->currSize; ++i) {
+                c.vectorArr[i] = this->vectorArr[i];
             }
         }
         else if (minSize < b.currSize) {
@@ -208,18 +269,18 @@ namespace lab3 {
                 c.vectorArr[i] = 0 - b.vectorArr[i];
             }
         }
-        c.currSize = a.currSize > b.currSize ? a.currSize : b.currSize;
+        c.currSize = this->currSize > b.currSize ? this->currSize : b.currSize;
         return c;
     }
-    Vector operator*(const Vector &a, const Vector &b) {
-        int minSize = a.currSize < b.currSize ? a.currSize : b.currSize;
+    Vector Vector::operator*(const Vector &b) {
+        int minSize = this->currSize < b.currSize ? this->currSize : b.currSize;
         Vector c = b;
         int i;
         for (i = 0; i < minSize; ++i) {
-            c.vectorArr[i] = a.vectorArr[i] * b.vectorArr[i];
+            c.vectorArr[i] = this->vectorArr[i] * b.vectorArr[i];
         }
-        if (minSize < a.currSize) {
-            for (; i < a.currSize; ++i) {
+        if (minSize < this->currSize) {
+            for (; i < this->currSize; ++i) {
                 c.vectorArr[i] = 0;
             }
         }
@@ -228,7 +289,7 @@ namespace lab3 {
                 c.vectorArr[i] = 0;
             }
         }
-        c.currSize = a.currSize > b.currSize ? a.currSize : b.currSize;
+        c.currSize = this->currSize > b.currSize ? this->currSize : b.currSize;
         return c;
     }
     Vector &Vector::operator-() {

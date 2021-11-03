@@ -5,17 +5,40 @@
 #include "vector.h"
 #include <fstream>
 
-int main() {
-    // check overloaded
-    lab3::Vector a;
-    std::cin >> a;
-    std::cout << a;
+void someStuff1(lab3::Vector v) {
+    std::cout << "!!!  SomeStuff1    !!!" << std::endl;
+    std::cout << "Current size: " << v.getCurrSize() << std::endl;
+    std::cout << "The first element: " << v.getEl(0) << std::endl;
+    std::cout << std::endl;
+}
 
-    std::cout << ++a;
-    std::cout << a++;
-    std::cout << a;
-    a(1, 5.338);
-    std::cout << a;
+void someStuff2(const lab3::Vector &v) {
+    std::cout << "!!!  SomeStuff2  !!!" << std::endl;
+    std::cout << "Current size: " << v.getCurrSize() << std::endl;
+    std::cout << "The first element: " << v.getEl(0) << std::endl;
+
+    std::cout << std::endl;
+}
+
+void someStuff3(lab3::Vector v) {
+    std::cout << "!!!  SomeStuff3  !!!" << std::endl;
+    std::cout << "You see this vector for the last time" << std::endl;
+    std::cout << v;
+
+    std::cout << std::endl;
+}
+
+int main() {
+    double elmArr[] = {3.31, 23.12, 31.21};
+    lab3::Vector v(3, elmArr);
+    someStuff1(v);
+    someStuff2(v);
+
+    lab3::Vector v1 = v;
+    std::cout << v1;
+
+    someStuff3((lab3::Vector &&)v1);
+    std::cout << v1;
 
 //    int choice;
 //    const char *err = "";

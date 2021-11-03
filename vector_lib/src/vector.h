@@ -13,27 +13,26 @@ namespace lab3 {
     const double epsilon = 0.01;
     class Vector {
     public:
-        static const int SIZE = 20;
+//        static const int SIZE = 20;
     private:
-        double vectorArr[SIZE];
+        double *vectorArr;
         int currSize;
     public:
         // friends
         friend std::ostream &operator<<(std::ostream &s, const Vector &v);
         friend std::istream &operator>>(std::istream &is, Vector &v);
-        friend Vector operator+(const Vector &a, const Vector &b);
-        friend Vector operator-(const Vector &a, const Vector &b);
-        friend Vector operator*(const Vector &a, const Vector &b);
         // constructors
-        Vector() : currSize(0) {};
-        Vector(double element) : currSize(1), vectorArr{double(element)} {};
+        Vector() : currSize(0), vectorArr(nullptr) {};
+        Vector(double element) : currSize(1), vectorArr{new double(element)} {};
         Vector(int size, double elemArr[]);
-        void put(double elem);
-
+        Vector(const Vector &v);
+        Vector(Vector&& v) noexcept;
+        // destructor
+        ~Vector() { delete[] vectorArr; std::cout << "===Destroyed===" << "\n"; }
         // getters
-        double getEl(int index) const;
+        [[nodiscard]] double getEl(int index) const;
         [[nodiscard]] const double *getVectArr() const { return this->vectorArr; }
-        int getCurrSize() const { return currSize; }
+        [[nodiscard]] int getCurrSize() const { return currSize; }
 
         // setters
         Vector &setEl(int index, double elem);
@@ -47,8 +46,11 @@ namespace lab3 {
         // additional
         std::istream &inputInit(std::istream &s);
         std::ostream &print(std::ostream &s) const;
+        void put(double elem);
 
         // overloaded operators
+        Vector &operator=(const Vector&);
+        Vector &operator=(Vector&&) noexcept ;
         Vector &operator-();
         Vector &operator+=(const Vector &b);
         double& operator[](std::size_t index) { return vectorArr[index]; }
@@ -56,6 +58,9 @@ namespace lab3 {
         Vector &operator++();
         Vector operator++(int);
         Vector &operator()(int index, double element);
+        Vector operator+(const Vector &b);
+        Vector operator-(const Vector &b);
+        Vector operator*(const Vector &b);
     };
 
     // optional non-members
