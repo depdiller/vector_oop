@@ -232,7 +232,7 @@ namespace lab3 {
         v.currSize = size;
         return is;
     }
-    Vector Vector::operator+(const Vector &b) {
+    Vector &Vector::operator+(const Vector &b) {
         int minSize = this->currSize < b.currSize ? this->currSize : b.currSize;
         Vector c = b;
         int i;
@@ -311,7 +311,7 @@ namespace lab3 {
         currSize = this->currSize > b.currSize ? this->currSize : b.currSize;
         return *this;
     }
-    Vector &Vector::operator++() {
+    const Vector &Vector::operator++() {
         for (int i = 0; i < currSize; ++i)
             ++vectorArr[i];
         return *this;

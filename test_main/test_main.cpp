@@ -31,14 +31,15 @@ void someStuff3(lab3::Vector v) {
 int main() {
     double elmArr[] = {3.31, 23.12, 31.21};
     lab3::Vector v(3, elmArr);
-    someStuff1(v);
-    someStuff2(v);
+//    someStuff1(v);
+//    someStuff2(v);
 
     lab3::Vector v1 = v;
-    std::cout << v1;
+//    std::cout << v1;
 
-    someStuff3((lab3::Vector &&)v1);
-    std::cout << v1;
+    lab3::Vector a = ++v;
+//    someStuff3((lab3::Vector &&)v1);
+//    std::cout << v1;
 
 //    int choice;
 //    const char *err = "";

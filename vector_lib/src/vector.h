@@ -55,10 +55,10 @@ namespace lab3 {
         Vector &operator+=(const Vector &b);
         double& operator[](std::size_t index) { return vectorArr[index]; }
         double operator[](std::size_t index) const { return vectorArr[index]; }
-        Vector &operator++();
+        const Vector &operator++();
         Vector operator++(int);
         Vector &operator()(int index, double element);
-        Vector operator+(const Vector &b);
+        Vector &operator+(const Vector &b);
         Vector operator-(const Vector &b);
         Vector operator*(const Vector &b);
     };
