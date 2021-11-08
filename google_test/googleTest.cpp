@@ -79,9 +79,6 @@ TEST(Arithmetic, ArithmeticsWithOperands) {
     ASSERT_DOUBLE_EQ(123.123, a.norm());
 }
 TEST(Exceptions, Allexceptions) {
-    double elemArr1[3] = {3.13, 65.421, 6.6};
-//    EXPECT_ANY_THROW(lab3::Vector a(4, elemArr1));
-
     double elemArr2[20] = {1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
     lab3::Vector a1(20, elemArr2);
     EXPECT_ANY_THROW(a1.put(3.3));
@@ -91,5 +88,4 @@ TEST(Exceptions, Allexceptions) {
     EXPECT_ANY_THROW(a1.setEl(20, 3.4));
 
     EXPECT_ANY_THROW(a1(20, 2.12));
-//    EXPECT_ANY_THROW(a1[20]);
 }

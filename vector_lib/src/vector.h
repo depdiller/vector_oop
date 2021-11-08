@@ -15,25 +15,23 @@ namespace lab3 {
     public:
         static const int SIZE = 20;
     private:
-        double vectorArr[SIZE];
+        double vectorArr[SIZE]{};
         int currSize;
     public:
         // friends
         friend std::ostream &operator<<(std::ostream &s, const Vector &v);
         friend std::istream &operator>>(std::istream &is, Vector &v);
-        friend Vector operator+(const Vector &a, const Vector &b);
-        friend Vector operator-(const Vector &a, const Vector &b);
-        friend Vector operator*(const Vector &a, const Vector &b);
         // constructors
         Vector() : currSize(0) {};
-        Vector(double element) : currSize(1), vectorArr{double(element)} {};
-        Vector(int size, double elemArr[]);
+        explicit Vector(double element) : currSize(1), vectorArr{double(element)} {};
+
+        Vector(int size, double elmArr[]);
         void put(double elem);
 
         // getters
         double getEl(int index) const;
         [[nodiscard]] const double *getVectArr() const { return this->vectorArr; }
-        int getCurrSize() const { return currSize; }
+        [[nodiscard]] int getCurrSize() const { return currSize; }
 
         // setters
         Vector &setEl(int index, double elem);
@@ -53,9 +51,12 @@ namespace lab3 {
         Vector &operator+=(const Vector &b);
         double& operator[](std::size_t index) { return vectorArr[index]; }
         double operator[](std::size_t index) const { return vectorArr[index]; }
-        Vector &operator++();
+        const Vector &operator++();
         Vector operator++(int);
         Vector &operator()(int index, double element);
+        Vector operator+(const Vector &b);
+        Vector operator-(const Vector &b);
+        Vector operator*(const Vector &b);
     };
 
     // optional non-members
@@ -92,13 +93,9 @@ namespace lab3 {
 }
 #endif //VECTOR_VECTOR_H
 
-/*TODO:
- * 5. подправить getNum, чтобы адекватно работала и не вылетала + чтобы полноценно заменить
- * ей getInt, а то код грязный*/
-
 /*TODO перегрузить:
  * В части В - операция присваивания обязательно - копирующая и перемещающая
  * переделать на динамическую
  * копирующий перемещающий конструктор
- * просваивание в тестах
+ * присваивание в тестах
  * */

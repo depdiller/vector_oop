@@ -2,10 +2,11 @@
 // Created by stani on 13.10.2021.
 //
 #include "vector.h"
+#include <cstddef>
 
 namespace lab3 {
     // constructor
-    Vector::Vector(int size, double elmArr[]) {
+    Vector::Vector (int size, double elmArr[]) {
         if (size > SIZE)
             throw std::invalid_argument("exceeded_size_inConstructor");
         currSize = size;
@@ -171,16 +172,16 @@ namespace lab3 {
         v.currSize = size;
         return is;
     }
-    Vector operator+(const Vector &a, const Vector &b) {
-        int minSize = a.currSize < b.currSize ? a.currSize : b.currSize;
+    Vector Vector::operator+(const Vector &b) {
+        int minSize = this->currSize < b.currSize ? this->currSize : b.currSize;
         Vector c = b;
         int i;
         for (i = 0; i < minSize; ++i) {
-            c.vectorArr[i] += a.vectorArr[i];
+            c.vectorArr[i] += this->vectorArr[i];
         }
-        if (minSize < a.currSize) {
-            for (; i < a.currSize; ++i) {
-                c.vectorArr[i] += a.vectorArr[i];
+        if (minSize < this->currSize) {
+            for (; i < this->currSize; ++i) {
+                c.vectorArr[i] += this->vectorArr[i];
             }
         }
         else if (minSize < b.currSize) {
@@ -188,19 +189,19 @@ namespace lab3 {
                 c.vectorArr[i] = 0 + b.vectorArr[i];
             }
         }
-        c.currSize = a.currSize > b.currSize ? a.currSize : b.currSize;
+        c.currSize = this->currSize > b.currSize ? this->currSize : b.currSize;
         return c;
     }
-    Vector operator-(const Vector &a, const Vector &b) {
-        int minSize = a.currSize < b.currSize ? a.currSize : b.currSize;
+    Vector Vector::operator-(const Vector &b) {
+        int minSize = this->currSize < b.currSize ? this->currSize : b.currSize;
         Vector c = b;
         int i;
         for (i = 0; i < minSize; ++i) {
-            c.vectorArr[i] = a.vectorArr[i] - b.vectorArr[i];
+            c.vectorArr[i] = this->vectorArr[i] - b.vectorArr[i];
         }
-        if (minSize < a.currSize) {
-            for (; i < a.currSize; ++i) {
-                c.vectorArr[i] = a.vectorArr[i];
+        if (minSize < this->currSize) {
+            for (; i < this->currSize; ++i) {
+                c.vectorArr[i] = this->vectorArr[i];
             }
         }
         else if (minSize < b.currSize) {
@@ -208,18 +209,18 @@ namespace lab3 {
                 c.vectorArr[i] = 0 - b.vectorArr[i];
             }
         }
-        c.currSize = a.currSize > b.currSize ? a.currSize : b.currSize;
+        c.currSize = this->currSize > b.currSize ? this->currSize : b.currSize;
         return c;
     }
-    Vector operator*(const Vector &a, const Vector &b) {
-        int minSize = a.currSize < b.currSize ? a.currSize : b.currSize;
+    Vector Vector::operator*(const Vector &b) {
+        int minSize = this->currSize < b.currSize ? this->currSize : b.currSize;
         Vector c = b;
         int i;
         for (i = 0; i < minSize; ++i) {
-            c.vectorArr[i] = a.vectorArr[i] * b.vectorArr[i];
+            c.vectorArr[i] = this->vectorArr[i] * b.vectorArr[i];
         }
-        if (minSize < a.currSize) {
-            for (; i < a.currSize; ++i) {
+        if (minSize < this->currSize) {
+            for (; i < this->currSize; ++i) {
                 c.vectorArr[i] = 0;
             }
         }
@@ -228,7 +229,7 @@ namespace lab3 {
                 c.vectorArr[i] = 0;
             }
         }
-        c.currSize = a.currSize > b.currSize ? a.currSize : b.currSize;
+        c.currSize = this->currSize > b.currSize ? this->currSize : b.currSize;
         return c;
     }
     Vector &Vector::operator-() {
@@ -250,7 +251,7 @@ namespace lab3 {
         currSize = this->currSize > b.currSize ? this->currSize : b.currSize;
         return *this;
     }
-    Vector &Vector::operator++() {
+    const Vector &Vector::operator++() {
         for (int i = 0; i < currSize; ++i)
             ++vectorArr[i];
         return *this;
