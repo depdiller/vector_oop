@@ -30,7 +30,7 @@ namespace lab3 {
         // destructor
         ~Vector() { delete[] vectorArr; std::cout << "===Destroyed===" << "\n"; }
         // getters
-        [[nodiscard]] double getEl(int index) const;
+        double getEl(int index) const;
         [[nodiscard]] const double *getVectArr() const { return this->vectorArr; }
         [[nodiscard]] int getCurrSize() const { return currSize; }
 
@@ -50,7 +50,8 @@ namespace lab3 {
 
         // overloaded operators
         Vector &operator=(const Vector&);
-        Vector &operator=(Vector&&) noexcept ;
+        Vector &operator=(Vector&&) noexcept;
+
         Vector &operator-();
         Vector &operator+=(const Vector &b);
         double& operator[](std::size_t index) { return vectorArr[index]; }
@@ -58,7 +59,7 @@ namespace lab3 {
         const Vector &operator++();
         Vector operator++(int);
         Vector &operator()(int index, double element);
-        Vector &operator+(const Vector &b);
+        Vector operator+(const Vector &b);
         Vector operator-(const Vector &b);
         Vector operator*(const Vector &b);
     };

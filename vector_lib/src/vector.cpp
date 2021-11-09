@@ -177,6 +177,8 @@ namespace lab3 {
 
     // Overloaded Operations
     Vector &Vector::operator=(const Vector &v) {
+        std::cout << "=== Copy operator ===" << std::endl;
+
         if (&v != this) {
             vectorArr = new double[v.currSize];
             for (int i = 0; i < v.currSize; ++i)
@@ -186,7 +188,11 @@ namespace lab3 {
         return *this;
     }
     Vector &Vector::operator=(Vector &&v) noexcept {
+        std::cout << "=== move operator ===" << std::endl;
+
         if (&v != this) {
+            delete[] vectorArr;
+
             vectorArr = v.vectorArr;
             currSize = v.currSize;
             v.vectorArr = nullptr;
@@ -232,7 +238,7 @@ namespace lab3 {
         v.currSize = size;
         return is;
     }
-    Vector &Vector::operator+(const Vector &b) {
+    Vector Vector::operator+(const Vector &b) {
         int minSize = this->currSize < b.currSize ? this->currSize : b.currSize;
         Vector c = b;
         int i;
@@ -250,7 +256,7 @@ namespace lab3 {
             }
         }
         c.currSize = this->currSize > b.currSize ? this->currSize : b.currSize;
-        return c;
+        return std::move(c);
     }
     Vector Vector::operator-(const Vector &b) {
         int minSize = this->currSize < b.currSize ? this->currSize : b.currSize;
@@ -270,7 +276,7 @@ namespace lab3 {
             }
         }
         c.currSize = this->currSize > b.currSize ? this->currSize : b.currSize;
-        return c;
+        return std::move(c);
     }
     Vector Vector::operator*(const Vector &b) {
         int minSize = this->currSize < b.currSize ? this->currSize : b.currSize;
@@ -290,7 +296,7 @@ namespace lab3 {
             }
         }
         c.currSize = this->currSize > b.currSize ? this->currSize : b.currSize;
-        return c;
+        return std::move(c);
     }
     Vector &Vector::operator-() {
         for (int i = 0; i < currSize; ++i)
@@ -320,7 +326,7 @@ namespace lab3 {
         Vector tmp = *this;
         for (int i = 0; i < currSize; ++i)
             ++vectorArr[i];
-        return tmp;
+        return std::move(tmp);
     }
     Vector &Vector::operator()(int index, double element) {
         if (index >= currSize)
